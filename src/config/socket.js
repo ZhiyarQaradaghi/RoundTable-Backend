@@ -180,6 +180,15 @@ const setupSocket = (server) => {
         console.error("Error leaving speaking queue:", error);
       }
     });
+
+    socket.on("reaction", ({ discussionId, type }) => {
+      try {
+        if (!discussionId || !type) return;
+        socket.to(discussionId).emit("reaction", type);
+      } catch (error) {
+        console.error("Error in reaction:", error);
+      }
+    });
   });
 
   return io;
