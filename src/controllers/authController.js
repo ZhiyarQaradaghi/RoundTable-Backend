@@ -6,10 +6,11 @@ class AuthController {
       const { token, user } = await authService.signup(req.body);
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
         path: "/",
+        domain: ".onrender.com",
       });
       res.status(201).json({ user });
     } catch (error) {
@@ -23,10 +24,11 @@ class AuthController {
       const { token, user } = await authService.login(email, password);
       res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
         path: "/",
+        domain: ".onrender.com",
       });
       res.json({ user });
     } catch (error) {
