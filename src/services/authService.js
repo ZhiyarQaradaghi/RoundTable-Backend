@@ -8,7 +8,10 @@ class AuthService {
     });
 
     if (existingUser) {
-      throw new Error("User already exists");
+      if (existingUser.email === userData.email) {
+        throw new Error("Email already registered");
+      }
+      throw new Error("Username already taken");
     }
 
     const user = await User.create(userData);
@@ -17,9 +20,15 @@ class AuthService {
 
   async login(email, password) {
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
-      throw new Error("Invalid credentials");
+    if (!user) {
+      throw new Error("No account found with this email");
     }
+
+    const isValidPassword = await user.comparePassword(password);
+    if (!isValidPassword) {
+      throw new Error("Invalid password");
+    }
+
     return this.generateToken(user);
   }
 
