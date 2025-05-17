@@ -12,10 +12,6 @@ class AuthController {
         path: "/",
       };
 
-      if (process.env.NODE_ENV === "production") {
-        cookieOptions.domain = ".onrender.com";
-      }
-
       res.cookie("token", token, cookieOptions);
       res.status(201).json({ user });
     } catch (error) {
@@ -34,10 +30,6 @@ class AuthController {
         maxAge: 24 * 60 * 60 * 1000,
         path: "/",
       };
-
-      if (process.env.NODE_ENV === "production") {
-        cookieOptions.domain = ".onrender.com";
-      }
 
       res.cookie("token", token, cookieOptions);
       res.json({ user });
