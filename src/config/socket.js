@@ -189,6 +189,31 @@ const setupSocket = (server) => {
         console.error("Error in reaction:", error);
       }
     });
+
+    socket.on("ready-to-connect", ({ discussionId }) => {
+      socket.to(discussionId).emit("user-ready", { userId: socket.user._id });
+    });
+
+    socket.on("voice-offer", ({ offer, targetUserId, discussionId }) => {
+      socket.to(discussionId).emit("voice-offer", {
+        offer,
+        userId: socket.user._id,
+      });
+    });
+
+    socket.on("voice-answer", ({ answer, targetUserId, discussionId }) => {
+      socket.to(discussionId).emit("voice-answer", {
+        answer,
+        userId: socket.user._id,
+      });
+    });
+
+    socket.on("ice-candidate", ({ candidate, targetUserId, discussionId }) => {
+      socket.to(discussionId).emit("ice-candidate", {
+        candidate,
+        userId: socket.user._id,
+      });
+    });
   });
 
   return io;
